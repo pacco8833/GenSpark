@@ -1,6 +1,7 @@
  package genspark.projects.project1;
 
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class DragonCave {
@@ -47,13 +48,11 @@ public class DragonCave {
 
     private void continueChooser() {
         System.out.println();
-        System.out.println("Do You continue?" + " Type and enter '1'");
-        System.out.println("Do You turn back?" + " Type and enter '2'");
-        System.out.print("Your Choice : ");
+        System.out.println("Continue..." + " Type and enter '1'");
+        System.out.print("Continue : ");
 
         try {
-            int userChoice = user.nextInt();
-            liver(userChoice);
+           awaitYourFate();
         } catch (NullPointerException e) {
             System.out.println("You've got to make a choice! Don't just stand there!");
             continueChooser();
@@ -70,8 +69,8 @@ public class DragonCave {
     private void liver(int input) {
         System.out.println();
         switch (input) {
-            case 1 -> die();
-            case 2 -> live();
+            case 0 -> die();
+            case 1 -> live();
             default -> {
                 System.out.println("Choice '" + input + "' does not exist!");
                 continueChooser();
@@ -89,6 +88,39 @@ public class DragonCave {
                 chooseCave();
             }
         }
+    }
+
+    private void awaitYourFate(){
+        Random rand = new Random();
+        int randomChoice = rand.nextInt(2);
+
+        if ((user.nextInt() == 1))
+            liver(randomChoice);
+         else {
+            System.out.println();
+            System.out.println("Too scared to make a choice? Type and Enter '0' to leave.");
+            System.out.println("...or Continue..." + " Type and enter '1'");
+            System.out.print("Continue ? : ");
+
+            if (user.nextInt() == 0)
+                quitter();
+            else if (user.nextInt() == 1)
+                liver(randomChoice);
+            else continueChooser();
+        }
+    }
+
+    private void quitter(){
+        System.out.println();
+        System.out.println("Your knees begin to buckle at the thought of being devoured for lunch");
+        System.out.println("You begin to realize that money isn't everything;");
+        System.out.println("It's really the adventure that you travelled to this distant fantasy land for.");
+        System.out.println();
+        System.out.println("On your way out of the cave, while crossing a crude rock bridge, you slip on a stone.");
+        System.out.println("You fall down what seems to be a never ending hole - forever.");
+        System.out.println("Let this be a lesson to never give up!");
+        System.out.println();
+        System.out.println("YOU DIED!!");
     }
 
     private void wrongCave() {
@@ -112,6 +144,8 @@ public class DragonCave {
         System.out.println("You got eaten... It was gruesome. You did put up a fight though!");
         System.out.println("Let's be real though, it was a dragon; You didn't stand a chance.");
         System.out.println("I mean think about it, you just fought a dragon so, that's a cool death.");
+        System.out.println();
+        System.out.println("YOU DIED!!");
     }
 
     private void live() {
@@ -120,6 +154,9 @@ public class DragonCave {
         System.out.println("You enter the room greeted figure who looks like Barney had a child with something from Dragon Tales.");
         System.out.println("You slay the dragon anyway since that's what you planned to do...");
         System.out.println("You collect your treasure and decide you need counselling.");
+        System.out.println();
+        System.out.println("YOU FOUND THE TREASURE!");
+
     }
 
     public static void main(String[] args) {
