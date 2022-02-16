@@ -2,7 +2,7 @@ package genspark.projects.project1;
 
 public final class DragonCave {
 
-    private User you;
+    private final User you;
 
     DragonCave() {
         you = new User();
@@ -47,13 +47,13 @@ public final class DragonCave {
     public String caveDecision(int input) {
         System.out.println();
         switch (input) {
-            case 1: {
+            case 1 -> {
                 return DragonText.wrongCave;
             }
-            case 2: {
+            case 2 -> {
                 return DragonText.rightCave;
             }
-            default: {
+            default->{
                 // the user entered some other number, run the initial msg again.
                 System.out.println("Cave '" + input + "' does not exist!");
                 chooseCave();
@@ -72,16 +72,16 @@ public final class DragonCave {
         System.out.println(result);
     }
 
-    /* chooses what will happen after a continue */
+    /* chooses what will happen after continue */
     public String lifeDecision(int input) {
         switch (input) {
-            case 1: {
+            case 1 -> {
                 return DragonText.getDeath();
             }
-            case 2: {
+            case 2 -> {
                 return DragonText.survive;
             }
-            default: {
+            default-> {
                 // the user entered some other number, run the initial msg again.
                 System.out.println("Choice '" + input + "' does not exist!");
                 continueChooser();
