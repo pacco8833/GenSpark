@@ -16,9 +16,6 @@ public class NumberGuesser {
         endItAll();
     }
 
-    public static void main(String[] args) {
-        new NumberGuesser();
-    }
 
     private void startGame() {
         System.out.println("Hey there, I've got a number guessing game for ya.");
@@ -117,5 +114,8 @@ public class NumberGuesser {
             user.next();
             endItAll();
         }
+    }
+    public static void main(String[] args) {
+        new NumberGuesser();
     }
 }
