@@ -9,7 +9,7 @@ public class UserIn {
     String name = null;
     Scanner user;
 
-    // inital scanner
+    // initial scanner
     public UserIn() {
         introduce();
     }
@@ -45,7 +45,7 @@ public class UserIn {
     }
 
     public Integer getNumber() {
-        Integer guess;
+        int guess;
         System.out.print("Guess Your Number : ");
         try {
             guess = user.nextInt();

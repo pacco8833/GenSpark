@@ -28,7 +28,7 @@ public class NumberGuesser {
         player.replay();
     }
     
-    // this constuctor means the same user is playing and they want to change the
+    // this constructor means the same user is playing, and they want to change the
     // max number
     NumberGuesser(String name, int num) {
         this.maxNumber = num;
@@ -78,7 +78,7 @@ public class NumberGuesser {
             ++count;
             // number is correct
             if (guess == randNum) {
-                thatsRight(count);
+                correctAnswer(count);
                 break;
             }
             // number is in the negatives
@@ -104,16 +104,16 @@ public class NumberGuesser {
     }
 
     private void printGuesses() {
-        String guessedNums = guesses.toString();
-        String guessed = """
-                Numbers you've guessed : %guessed
+        String guessed = guesses.toString();
+        String numbers = """
+                Numbers guessed so far : %numbers
                 """;
-        guessed = guessed.replace("%guessed", guessedNums.substring(1, guessedNums.length() - 1));
-        System.out.println(guessed);
+        numbers = numbers.replace("%numbers", guessed.substring(1, guessed.length() - 1));
+        System.out.println(numbers);
 
     }
 
-    private void thatsRight(int numTimes) {
+    private void correctAnswer(int numTimes) {
         String genius = """
                 That's exactly it, %name.
                 You figured it out in %int attempts.""";
