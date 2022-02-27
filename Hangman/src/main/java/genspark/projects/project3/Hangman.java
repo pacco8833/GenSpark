@@ -18,21 +18,24 @@ public class Hangman {
 
     Hangman() {
         this.randomWord = bank.getRandomWord();
-        start();
     }
 
     Hangman(String word) {
         System.out.println("It seems you provided your own word, That's great.");
         this.randomWord = word;
-        start();
     }
 
     public void setHashCharacter(String character) {
         this.hashCharacter = character.charAt(0);
     }
+    
+    public Character getHashCharacter() {
+        return hashCharacter;
+    }
 
     public void finishHim() {
         s.close();
+        bank.begForAWord();
         System.exit(0);
     }
 
@@ -94,7 +97,7 @@ public class Hangman {
                     findLetter(letter);
                 } else
                     System.out.println("You have already used that letter");
-            } catch (NullPointerException e) {
+            } catch (StringIndexOutOfBoundsException e) {
                 System.out.println("You didn't enter anything...");
                 quitter();
             }
