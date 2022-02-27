@@ -1,4 +1,4 @@
-package genspark.projects.project1;
+package genspark.projects.project2;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
