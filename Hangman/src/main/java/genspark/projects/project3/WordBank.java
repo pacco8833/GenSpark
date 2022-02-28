@@ -74,7 +74,7 @@ public class WordBank {
         try (FileWriter fw = new FileWriter(namedFile, true)) {
             fw.write(newWord + "\n");
             System.out.println("Thanks! '" + newWord.trim() + "' has been added to the wordbank!");
-        } catch (Exception e) {x
+        } catch (Exception e) {
             System.out.println("Something went wrong man.");
             System.out.println(e.getMessage());
             System.exit(0);
