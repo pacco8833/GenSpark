@@ -29,7 +29,7 @@ public class UserIn {
     }
 
     private void introduce() {
-        String intro = null;
+        String intro;
 
         if (name == null) {
             intro = """
@@ -115,17 +115,9 @@ public class UserIn {
     private void evaluateResponse(String response) {
         response = (response.charAt(0) + "").toLowerCase();
         switch (response) {
-            case "n": {
-                endProgram();
-            }
-                break;
-            case "y": {
-                new Hangman();
-                break;
-            }
-            default: {
-                replay();
-            }
+            case "n" -> endProgram();
+            case "y" -> new Hangman();
+            default -> replay();
         }
     }
 

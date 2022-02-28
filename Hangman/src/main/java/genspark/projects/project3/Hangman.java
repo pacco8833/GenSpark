@@ -9,9 +9,10 @@ public class Hangman {
     private final ArrayList<Character> attemptedChars = new ArrayList<>();
     private final ArrayList<Integer> allIndexes = new ArrayList<>();
     // objects
-    private UserIn you = new UserIn();
-    private WordBank bank = new WordBank();
-    private String wordHash = "", randomWord;
+    private final UserIn you = new UserIn();
+    private final WordBank bank = new WordBank();
+    private String wordHash = "";
+    private final String randomWord;
     // primitives
     private boolean found = false;
     private int numWrong = 0, count = 0;
@@ -36,12 +37,12 @@ public class Hangman {
 
     public void start() {
         you.setName();
-        wordHash = unhash(randomWord, hashCharacter + "", findAll(randomWord, "$"));
+        wordHash = unhash(randomWord, findAll(randomWord, "$"));
         getInput();
         finishHim();
     }
 
-    public String unhash(String word, String letter, ArrayList<Integer> indexes) {
+    public String unhash(String word, ArrayList<Integer> indexes) {
         String[] arr = new String[word.length()];
         Arrays.fill(arr, hashCharacter + "");
         for (Integer indexOfChar : indexes)
@@ -67,7 +68,7 @@ public class Hangman {
             thatsTheWrongLetter(character);
         } else {
             allIndexes.addAll(findAll(randomWord, character));
-            wordHash = unhash(randomWord, character, allIndexes);
+            wordHash = unhash(randomWord, allIndexes);
         }
     }
 
@@ -129,31 +130,13 @@ public class Hangman {
                 """.replace("%letter", character));
         numWrong++;
         switch (numWrong) {
-            case 1: {
-                WrongLetter.head();
-                break;
-            }
-            case 2: {
-                WrongLetter.arm();
-                break;
-            }
-            case 3: {
-                WrongLetter.arms();
-                break;
-            }
-            case 4: {
-                WrongLetter.leg();
-                break;
-            }
-            case 5: {
-                WrongLetter.legs();
-                break;
-            }
-            case 6: {
-                WrongLetter.torso();
-                break;
-            }
-            default: {
+            case 1 -> WrongLetter.head();
+            case 2 -> WrongLetter.arm();
+            case 3 -> WrongLetter.arms();
+            case 4 -> WrongLetter.leg();
+            case 5 -> WrongLetter.legs();
+            case 6 -> WrongLetter.torso();
+            default -> {
                 WrongLetter.fullBody();
                 System.out.println("You dead, fool!");
                 System.out.println("The secret word was '" + randomWord + ".'");
