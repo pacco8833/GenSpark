@@ -1,8 +1,9 @@
 *\.idea\*
-*/idea/*
+*/.idea/*
 .idea\*
 .idea/*
 \.env
 \env
 *.iml
-.vscode/*
+*/.vscode/*
+*\.vscode\*
