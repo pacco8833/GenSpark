@@ -1,17 +1,20 @@
 package genspark.projects.project3;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class WordBank {
     // List of words in words.txt
-    private final ArrayList<String> wordBank = new ArrayList<>();
+    private ArrayList<String> wordBank;
     // Location of word list
-    private final File namedFile = new File("src\\words.txt");
+    private final String namedFile = ("src\\words.txt");
+
 
     WordBank() {
         loadRandomWords();
@@ -29,17 +32,10 @@ public class WordBank {
 
     // opens a file filled with random words
     private void loadRandomWords() {
-        // scan all the words in the file
-        try (Scanner file = new Scanner(namedFile)) {
-            String line;
-            while (file.hasNextLine()) {
-                // get line from file
-                line = file.nextLine();
-                // add line to possible random words
-                wordBank.add(line.toLowerCase());
-            }
-        } catch (FileNotFoundException fnf) {
-            System.out.println("Word Bank file has either been deleted or moved.");
+        try {
+            wordBank = (ArrayList<String>) Files.lines(Path.of(namedFile)).collect(Collectors.toList());
+        } catch (IOException ioe) {
+            System.out.println("Could not open file.");
         }
     }
 
@@ -73,7 +69,7 @@ public class WordBank {
         String newWord = toTitleCase(word);
         try (FileWriter fw = new FileWriter(namedFile, true)) {
             fw.write(newWord + "\n");
-            System.out.println("Thanks! '" + newWord.trim() + "' has been added to the wordbank!");
+            System.out.println("Thanks! '" + newWord.trim() + "' has been added to the word bank!");
         } catch (Exception e) {
             System.out.println("Something went wrong man.");
             System.out.println(e.getMessage());

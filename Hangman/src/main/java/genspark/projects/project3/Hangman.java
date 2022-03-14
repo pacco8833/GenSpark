@@ -11,10 +11,9 @@ public class Hangman {
     // objects
     private final UserIn you = new UserIn();
     private final WordBank bank = new WordBank();
-    private String wordHash = "";
     private final String randomWord;
+    private String wordHash = "";
     // primitives
-    private boolean found = false;
     private int numWrong = 0, count = 0;
     private char hashCharacter = '_';
 
@@ -27,12 +26,23 @@ public class Hangman {
         this.randomWord = word;
     }
 
-    public void setHashCharacter(String character) {
-        this.hashCharacter = character.charAt(0);
+    public static ArrayList<Integer> findAll(String word, String letter) {
+        ArrayList<Integer> indexes = new ArrayList<>();
+        int num = word.indexOf(letter);
+
+        while (num != -1) {
+            indexes.add(num);
+            num = word.indexOf(letter, ++num);
+        }
+        return indexes;
     }
 
     public Character getHashCharacter() {
         return hashCharacter;
+    }
+
+    public void setHashCharacter(String character) {
+        this.hashCharacter = character.charAt(0);
     }
 
     public void start() {
@@ -50,16 +60,6 @@ public class Hangman {
         return Arrays.toString(arr);
     }
 
-    public static ArrayList<Integer> findAll(String word, String letter) {
-        ArrayList<Integer> indexes = new ArrayList<>();
-        int num = word.indexOf(letter);
-        while (num != -1) {
-            indexes.add(num);
-            num = word.indexOf(letter, ++num);
-        }
-        return indexes;
-    }
-
     private void findLetter(char letter) {
         int letterIndex = randomWord.indexOf(letter);
         String character = letter + "";
@@ -73,8 +73,7 @@ public class Hangman {
     }
 
     private void testIfWordFound() {
-        if (wordHash.indexOf(hashCharacter + "") == -1) {
-            found = true;
+        if (!wordHash.contains(hashCharacter + "")) {
             String finishedStr = """
                     You found the secret word, %name!
                     Nice One!
@@ -84,28 +83,26 @@ public class Hangman {
             finishedStr = finishedStr.replace("%random", randomWord);
             System.out.println(finishedStr);
         }
+        getInput();
     }
 
     private void getInput() {
         char letter;
-        while (!found) {
-            command();
-            try {
-                letter = you.getLetter();
-                if ((letter + "").isBlank()) {
-                    you.quit(randomWord);
-                }
-                if (attemptedChars.contains(letter)) {
-                    System.out.println("You have already used that letter");
-                } else {
-                    attemptedChars.add(letter);
-                    findLetter(letter);
-                    testIfWordFound();
-                }
-            } catch (StringIndexOutOfBoundsException e) {
-                System.out.println("You didn't enter anything...");
+        command();
+        try {
+            letter = you.getLetter();
+            if ((letter + "").isBlank()) {
                 you.quit(randomWord);
+            } else if (attemptedChars.contains(letter)) {
+                System.out.println("You have already used that letter");
+            } else {
+                attemptedChars.add(letter);
+                findLetter(letter);
+                testIfWordFound();
             }
+        } catch (StringIndexOutOfBoundsException e) {
+            System.out.println("You didn't enter anything...");
+            you.quit(randomWord);
         }
     }
 
