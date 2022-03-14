@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Hangman {
-
     // data
     private final ArrayList<Character> attemptedChars = new ArrayList<>();
     private final ArrayList<Integer> allIndexes = new ArrayList<>();
@@ -14,6 +13,7 @@ public class Hangman {
     private final String randomWord;
     private String wordHash = "";
     // primitives
+    private boolean youDead = false;
     private int numWrong = 0, count = 0;
     private char hashCharacter = '_';
 
@@ -26,64 +26,31 @@ public class Hangman {
         this.randomWord = word;
     }
 
-    public static ArrayList<Integer> findAll(String word, String letter) {
-        ArrayList<Integer> indexes = new ArrayList<>();
-        int num = word.indexOf(letter);
-
-        while (num != -1) {
-            indexes.add(num);
-            num = word.indexOf(letter, ++num);
-        }
-        return indexes;
+    public void findAll(String word, String letter) {
+        Arrays.stream(word.split("")).forEach(x -> {
+            if (x.equals(letter))
+                allIndexes.add(word.indexOf(x));
+        });
     }
 
-    public Character getHashCharacter() {
-        return hashCharacter;
-    }
-
-    public void setHashCharacter(String character) {
-        this.hashCharacter = character.charAt(0);
-    }
-
-    public void start() {
-        you.setName();
-        wordHash = unhash(randomWord, findAll(randomWord, "$"));
-        getInput();
-        finishHim();
-    }
-
-    public String unhash(String word, ArrayList<Integer> indexes) {
+    public String unhash(String word) {
         String[] arr = new String[word.length()];
         Arrays.fill(arr, hashCharacter + "");
-        for (Integer indexOfChar : indexes)
-            arr[indexOfChar] = word.charAt(indexOfChar) + "";
+
+        allIndexes.forEach(x-> arr[x] = word.charAt(x) + "");
+
         return Arrays.toString(arr);
     }
 
     private void findLetter(char letter) {
         int letterIndex = randomWord.indexOf(letter);
         String character = letter + "";
-
         if (letterIndex < 0) {
-            thatsTheWrongLetter(character);
+            theWrongLetter(character);
         } else {
-            allIndexes.addAll(findAll(randomWord, character));
-            wordHash = unhash(randomWord, allIndexes);
+            findAll(randomWord, character);
+            wordHash = unhash(randomWord);
         }
-    }
-
-    private void testIfWordFound() {
-        if (!wordHash.contains(hashCharacter + "")) {
-            String finishedStr = """
-                    You found the secret word, %name!
-                    Nice One!
-                    '%random'
-                    """;
-            finishedStr = finishedStr.replace("%name", you.getName());
-            finishedStr = finishedStr.replace("%random", randomWord);
-            System.out.println(finishedStr);
-        }
-        getInput();
     }
 
     private void getInput() {
@@ -98,8 +65,8 @@ public class Hangman {
             } else {
                 attemptedChars.add(letter);
                 findLetter(letter);
-                testIfWordFound();
             }
+            testIfWordFound();
         } catch (StringIndexOutOfBoundsException e) {
             System.out.println("You didn't enter anything...");
             you.quit(randomWord);
@@ -121,7 +88,7 @@ public class Hangman {
         System.out.println(commandString);
     }
 
-    private void thatsTheWrongLetter(String character) {
+    private void theWrongLetter(String character) {
         System.out.println("""
                 '%letter' is not in the secret word
                 """.replace("%letter", character));
@@ -133,12 +100,41 @@ public class Hangman {
             case 4 -> WrongLetter.leg();
             case 5 -> WrongLetter.legs();
             case 6 -> WrongLetter.torso();
-            default -> {
-                WrongLetter.fullBody();
-                System.out.println("You dead, fool!");
-                System.out.println("The secret word was '" + randomWord + ".'");
-                finishHim();
-            }
+            default -> wordNotFound();
+        }
+    }
+
+    private void wordNotFound() {
+        youDead = true;
+        WrongLetter.fullBody();
+        System.out.println("You dead, fool!");
+        System.out.println("The secret word was '" + randomWord + ".'");
+    }
+
+    private void testIfWordFound() {
+        if (!wordHash.contains(hashCharacter + "")) {
+            String finishedStr = """
+                    You found the secret word, %name!
+                    Nice One!
+                    '%random'
+                    """;
+            finishedStr = finishedStr.replace("%name", you.getName());
+            finishedStr = finishedStr.replace("%random", randomWord);
+            System.out.println(finishedStr);
+        } else if (youDead) {
+            wordNotFound();
+            finishHim();
+        } else
+            getInput();
+    }
+
+    public void start() {
+        you.setName();
+        wordHash = unhash(randomWord);
+        getInput();
+        if (wordHash.indexOf(hashCharacter) > -1) {
+            wordNotFound();
+            finishHim();
         }
     }
 
@@ -146,5 +142,13 @@ public class Hangman {
         bank.begForAWord();
         you.replay();
         System.exit(0);
+    }
+
+    public Character getHashCharacter() {
+        return hashCharacter;
+    }
+
+    public void setHashCharacter(String character) {
+        this.hashCharacter = character.charAt(0);
     }
 }

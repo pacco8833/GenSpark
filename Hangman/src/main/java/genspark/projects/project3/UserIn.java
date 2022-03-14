@@ -90,9 +90,8 @@ public class UserIn {
     }
 
     public void replay() {
-        String response;
         interrogate();
-        response = user.nextLine();
+        String response = user.nextLine();
         evaluateResponse(response);
     }
 
