@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Human extends GamePiece {
 
     private final ArrayList<String> inventory = new ArrayList<>();
+    private final int size = 7;
 
     public void pickupItem(String item) {
         inventory.add(item);
@@ -13,6 +14,7 @@ public class Human extends GamePiece {
     public ArrayList<String> getItems() {
         return inventory;
     }
+
 
     @Override
     public String toString() {
