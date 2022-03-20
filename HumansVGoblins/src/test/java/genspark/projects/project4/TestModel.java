@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class TestModel {
 
     Model model;
-    Human guy = new Human();
+    Human guy = new Human(3);
 
     @Test
     public void noLand() {
@@ -18,7 +18,6 @@ public class TestModel {
     @Test
     public void onLand() {
         model = new Model(5);
-        model.reMap(guy);
         model.randomizePosition(guy);
         assertFalse(guy.getPosition().getX() == 0 && guy.getPosition().getY() == 0);
     }

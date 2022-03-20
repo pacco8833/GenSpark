@@ -8,8 +8,8 @@ public class View extends JFrame implements Runnable {
 
     GridLayout layout;
 
-    View(String title, int size) {
-        super(title);
+    View(int size) {
+        super("Monster Land");
         layout = new GridLayout(size, size);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(size * 150, size * 150);
@@ -17,28 +17,7 @@ public class View extends JFrame implements Runnable {
         setResizable(false);
     }
 
-    public static int chooseDifficulty() {
-
-        try {
-            int size = Integer.parseInt(JOptionPane.showInputDialog(null,
-                    """
-                            Choose a Difficulty
-                            1 -> Short  (5 squares)
-                            2 -> Medium (10 Squares)
-                            3 -> Long   (15 Squares) <- default value
-                            """));
-            return switch (size) {
-                case 1 -> 5;
-                case 2 -> 10;
-                default -> 15;
-            };
-        } catch (NullPointerException npe) {
-            System.exit(0);
-            return -1;
-        }
-    }
-
-    public void introduce(Map<String, String> gamePieces) {
+    public void introduce(Map<String, GamePiece> gamePieces) {
         String intro = ("""
                 Look fool, this is You ( %you )
                 You are in MonsterLand,
@@ -52,16 +31,15 @@ public class View extends JFrame implements Runnable {
                 Use the ArrowKeys to move. Use SpaceBar to Exit.
                         
                 """);
-        intro = intro.replace("%you", gamePieces.get("player"));
-        intro = intro.replace("%goblin", gamePieces.get("monster"));
-        intro = intro.replace("%cash", gamePieces.get("treasure"));
+        intro = intro.replace("%you", gamePieces.get("player").toString());
+        intro = intro.replace("%goblin", gamePieces.get("monster").toString());
+        intro = intro.replace("%cash", gamePieces.get("treasure").toString());
         popupMsg(intro);
     }
 
     public void mapGamePieces(String[][] map) {
         JPanel pane = new JPanel(layout);
-        final Font f = new Font("Segoe UI Emoji", Font.BOLD, 60);
-
+        final Font f = new Font("Segoe UI Emoji", Font.BOLD, 40);
         for (String[] x : map) {
             for (String val : x) {
                 JLabel character = new JLabel(val);
@@ -70,7 +48,6 @@ public class View extends JFrame implements Runnable {
                 pane.add(character);
             }
         }
-
         pane.setBackground(Color.YELLOW);
         add(pane, BorderLayout.CENTER);
         setVisible(true);
@@ -85,7 +62,28 @@ public class View extends JFrame implements Runnable {
     }
 
     public void popupMsg(String msg) {
+        if (msg != null)
         JOptionPane.showMessageDialog(this, msg);
+    }
+
+    public static int chooseDifficulty() {
+        String difficulty =
+                        """
+                        Choose a Difficulty
+                        1. Short  ( 4 squares )
+                        2. Medium ( 5 Squares )
+                        3. Long   ( 6 Squares - default )
+                        """;
+        try {
+            int size = Integer.parseInt(JOptionPane.showInputDialog(null, difficulty));
+            return switch (size) {
+                case 1 -> 4;
+                case 2 -> 5;
+                default -> 6;
+            };
+        } catch (NumberFormatException npe) {
+            return 6;
+        }
     }
 
     @Override

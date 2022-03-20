@@ -8,15 +8,11 @@ import org.junit.jupiter.api.Test;
 
 public class TestHuman {
 
-    Human guy = new Human();
+    Human guy = new Human(3);
     
     @Test
     public void createInventoryItem() {
-        String item = "1 straw penny";
-        ArrayList<String> array;
-        guy.pickupItem(item);
-        array = guy.getItems();
-        assertEquals(item, array.get(array.size() -1));
+
     }
 
 }

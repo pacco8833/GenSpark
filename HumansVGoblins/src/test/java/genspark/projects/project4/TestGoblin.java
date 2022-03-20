@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 
 public class TestGoblin {
-    Human guy = new Human();
+    Human guy = new Human(3);
     Goblin goblin = new Goblin();
 
     @Test
